@@ -16,8 +16,8 @@ describe('Rahul Shetty Angular Page Practise', () => {
     rsAngularPractise.name().type('nn{backspace}');
     rsAngularPractise.warningMessage().should('have.text','Name should be at least 2 characters')    
   })
-  xit('check error message on email',()=>{
-    rsAngularPractise.name().type('nn{backspace}');
-    rsAngularPractise.warningMessage().should('have.text','Name should be at least 2 characters')    
+  it('check error message on email',()=>{
+    //rsAngularPractise.name().type('nn{backspace}');
+    //rsAngularPractise.warningMessage().should('have.text','Name should be at least 2 characters')    
   })
 })
