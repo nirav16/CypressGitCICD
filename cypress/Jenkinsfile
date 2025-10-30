@@ -1,0 +1,53 @@
+pipeline {
+    agent any
+
+    tools {
+        nodejs "node18" // the name configured in Jenkins
+    }
+
+    environment {
+        CI = 'true'
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                git 'https://github.com/nirav16/CypressGitCICD.git'
+            }
+        }
+
+        stage('Install Dependencies') {
+            steps {
+                echo "Installing npm dependencies..."
+                sh 'npm install'
+            }
+        }
+
+        stage('Run Cypress Tests (Headless)') {
+            steps {
+                echo "Running Cypress tests in headless mode..."
+                sh 'npx cypress run --browser chrome'
+            }
+        }
+
+        stage('Archive Results') {
+            steps {
+                echo "Archiving test results..."
+                archiveArtifacts artifacts: 'cypress/videos/**/*, cypress/screenshots/**/*', allowEmptyArchive: true
+            }
+        }
+    }
+
+    post {
+        always {
+            echo "Cleaning workspace..."
+            cleanWs()
+        }
+        success {
+            echo "✅ Cypress tests passed successfully!"
+        }
+        failure {
+            echo "❌ Cypress tests failed!"
+        }
+    }
+}
